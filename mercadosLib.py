@@ -44,6 +44,8 @@ def limpiarMercado(DF):
     # Si tiene un espacio al inicio o final lo elimina
     DF["MERCADO"] = DF["MERCADO"].str.rstrip(" ").str.lstrip(" ")
     
+    DF["MERCADO"] = DF["MERCADO"].replace(regex=[r','], value= "") #Elimina las ","
+    
     ######################### Faltas ortográficas o de tipeo #####################
     DF["MERCADO"] = DF["MERCADO"].replace(regex=[r'ASRIZAGA', r'ARIAZAGA', r'ARTIZAGA'], value= "ARIZAGA")
     DF["MERCADO"] = DF["MERCADO"].replace(regex=r" A VEGA", value="ARIZAGA VEGA")
@@ -73,8 +75,7 @@ def limpiarMercado(DF):
     
     # Reemplazar caracteres especiales y patrones semejantes a AD-987
     DF["MERCADO"] = DF["MERCADO"].replace(regex=[r"}", r" .{1,2}-.{1,3}"], value="")
-    DF["MERCADO"] = DF["MERCADO"].replace(regex=[r"CENTRO DE COMPRAS", r'CENTRO COMPRAS', r"CC\.", r"CENTRO COMERCIAL", r'"C\.C"', r'CC'], value="C.C.")
-    DF["MERCADO"] = DF["MERCADO"].replace(regex=[r"C\.C\.9"], value="C.C. 9")
+    DF["MERCADO"] = DF["MERCADO"].replace(regex=[r"C\.C\.9", r"CENTRO DE COMPRAS 9"], value="C.C. 9")
     DF["MERCADO"] = DF["MERCADO"].replace(regex=r"PLAZOLETA", value="PLAZA")
     DF["MERCADO"] = DF["MERCADO"].replace(regex=r'CUEVA VALLEJO', value="CUEVA")
     
@@ -97,7 +98,7 @@ def limpiarMercado(DF):
     
     
     ############# Mercados ################
-    DF["MERCADO"] = DF["MERCADO"].replace(regex=[r".*C\.C\. 9 DE OCTUBRE.*", r".*9 DE OCTUBRE.*C\.C\..*", r".*C\.C\..*9.*",], value="CENTRO COMERCIAL 9 DE OCTUBRE")
+    DF["MERCADO"] = DF["MERCADO"].replace(regex=[r".*C\.C\. 9 DE OCTUBRE.*", r".*9 DE OCTUBRE.*C\.C\..*", r".*C\.C\..*9.*", r".*CC 9 DE OCTUBRE.*"], value="CENTRO COMERCIAL 9 DE OCTUBRE")
     DF["MERCADO"] = DF["MERCADO"].replace(regex=[r'.*ROTARY.*'], value="PLAZA ROTARY")
     DF["MERCADO"] = DF["MERCADO"].replace(regex=[r'.*MERCADO 9 DE OCTUBRE.*', r'^9 DE OCTUBRE$'], value="MERCADO 9 DE OCTUBRE")
     DF["MERCADO"] = DF["MERCADO"].replace(regex=[r'.*3 DE NOVIEMBRE.*'], value="MERCADO 3 DE NOVIEMBRE")
